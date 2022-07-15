@@ -1,10 +1,11 @@
 import axios from 'axios';
 import NoResults from '../components/NoResults';
 import VideoCard from '../components/VideoCard';
-import { IVideo } from '../types';
+import { Video } from '../types';
+import { BASE_URL } from '../utils';
 
 interface IProps {
-  videos: IVideo[];
+  videos: Video[];
 }
 
 const Home = ({ videos }: IProps) => {
@@ -12,9 +13,7 @@ const Home = ({ videos }: IProps) => {
   return (
     <div className='flex flex-col gap-10 videos h-full'>
       {videos.length ? (
-        videos.map((video: IVideo) => (
-          <VideoCard post={video} key={video._id} />
-        ))
+        videos.map((video: Video) => <VideoCard post={video} key={video._id} />)
       ) : (
         <NoResults text={'No Videos!'} />
       )}
@@ -23,7 +22,7 @@ const Home = ({ videos }: IProps) => {
 };
 
 export const getServerSideProps = async () => {
-  const { data } = await axios.get(`http://localhost:3000/api/post`);
+  const { data } = await axios.get(`${BASE_URL}/api/post`);
 
   return {
     props: {
