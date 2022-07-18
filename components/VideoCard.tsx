@@ -13,19 +13,25 @@ interface IProps {
 
 const VideoCard: NextPage<IProps> = ({ post }) => {
   const [isHover, setIsHover] = useState(false);
-  const [playing, setPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isVideoMuted, setIsVideoMuted] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const onVideoPress = () => {
-    if (playing) {
+    if (isPlaying) {
       videoRef?.current?.pause();
-      setPlaying(false);
+      setIsPlaying(false);
     } else {
       videoRef?.current?.play();
-      setPlaying(true);
+      setIsPlaying(true);
     }
   };
+
+  useEffect(() => {
+    if (videoRef?.current) {
+      videoRef.current.muted = isVideoMuted;
+    }
+  }, [isVideoMuted]);
 
   return (
     <div className='flex flex-col border-b-2 border-gray-200 pb-6'>
@@ -77,7 +83,7 @@ const VideoCard: NextPage<IProps> = ({ post }) => {
           </Link>
           {isHover && (
             <div className='absolute bottom-6 cursor-pointer left-8 md:left-14 lg:left-0 flex gap-10 lg:justify-between w-[100px] md:w-[50px] p-3'>
-              {playing ? (
+              {isPlaying ? (
                 <button onClick={onVideoPress}>
                   <BsFillPauseFill className='text-black text-2xl lg:text-4xl' />
                 </button>
