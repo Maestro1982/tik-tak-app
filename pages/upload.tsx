@@ -16,7 +16,7 @@ const Upload = () => {
   >();
   const [wrongFileType, setWrongFileType] = useState(false);
   const [caption, setCaption] = useState('');
-  const [category, setCategory] = useState(topics[0].name);
+  const [topic, setTopic] = useState(topics[0].name);
   const [savingPost, setSavingPost] = useState(false);
 
   const { userProfile }: { userProfile: any } = useAuthStore();
@@ -47,7 +47,7 @@ const Upload = () => {
   };
 
   const handlePost = async () => {
-    if (caption && videoAsset?._id && category) {
+    if (caption && videoAsset?._id && topic) {
       setSavingPost(true);
 
       const document = {
@@ -65,7 +65,7 @@ const Upload = () => {
           _type: 'postedBy',
           _ref: userProfile?._id,
         },
-        category,
+        topic,
       };
       await axios.post(`${BASE_URL}/api/post`, document);
 
@@ -144,7 +144,7 @@ const Upload = () => {
           <label className='text-md font-medium'>Choose a Category</label>
           <select
             className='outline-none border-2 border-gray-200 text-md capitalize lg:p-4 p-2 rounded cursor-pointer'
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => setTopic(e.target.value)}
           >
             {topics.map((topic) => (
               <option
