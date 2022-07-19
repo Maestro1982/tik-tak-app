@@ -22,6 +22,10 @@ const Upload = () => {
   const { userProfile }: { userProfile: any } = useAuthStore();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!userProfile) router.push('/');
+  }, [userProfile, router]);
+
   const uploadVideo = async (e: any) => {
     const selectedFile = e.target.files[0];
     const fileTypes = ['video/mp4', 'video/webm', 'video/ogg'];
@@ -71,6 +75,14 @@ const Upload = () => {
 
       router.push('/');
     }
+  };
+
+  const handleDiscard = () => {
+    setSavingPost(false);
+    setVideoAsset(undefined);
+    setCaption('');
+    setTopic('');
+    router.push('/');
   };
 
   return (
@@ -158,7 +170,7 @@ const Upload = () => {
           </select>
           <div className='flex gap-6 mt-10'>
             <button
-              onClick={() => {}}
+              onClick={handleDiscard}
               type='button'
               className='border-gray-300 border-2 text-md font-medium p-2 rounded w-28 lg:w-44 outline-none'
             >
